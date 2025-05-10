@@ -10,10 +10,9 @@ class EVDataProcessor:
                  raw_cache_path: str = 'cache/raw_ev_data.csv',
                  processed_cache_path: str = 'cache/processed_ev_data.parquet'):
         # Initialize the data processor with configuration
-        # Arguments:
-        #   url: Source URL for EV data
-        #   raw_cache_path: Storage path for raw data
-        #   processed_cache_path: Storage path for processed data
+        # url: Source URL for EV data
+        # raw_cache_path: Storage path for raw data
+        # processed_cache_path: Storage path for processed data
         self.url = url
         self.raw_cache_path = raw_cache_path
         self.processed_cache_path = processed_cache_path
@@ -22,7 +21,6 @@ class EVDataProcessor:
 
     def _ensure_cache_dir(self):
         # Create cache directories if they don't exist
-        # os.makedirs creates parent directories as needed
         # exist_ok=True prevents errors if directories exist
         os.makedirs(os.path.dirname(self.raw_cache_path), exist_ok=True)
         os.makedirs(os.path.dirname(self.processed_cache_path), exist_ok=True)
@@ -54,8 +52,7 @@ class EVDataProcessor:
 
     def load_data(self, force_download: bool = False) -> pd.DataFrame:
         # Load data from cache or download if needed
-        # Arguments:
-        #   force_download: If True, always download fresh data
+        # force_download: If True, always download fresh data
         # Returns: Loaded pandas DataFrame
         
         # Always download if forced or no cache exists
@@ -81,8 +78,7 @@ class EVDataProcessor:
 
     def _parse_geopoint(self, point_str: str) -> tuple:
         # Parse POINT string into (latitude, longitude)
-        # Arguments:
-        #   point_str: String in format "POINT (lon lat)"
+        # point_str: String in format "POINT (lon lat)"
         # Returns: Tuple of (lat, lon) or (None, None) if fails
         try:
             if pd.notna(point_str) and 'POINT' in point_str:
@@ -129,22 +125,24 @@ class EVDataProcessor:
         print("Data transformation complete")
         return self.df
 
-    def save_processed_data(self) -> str:
+    def save_processed_data(self, output_path: str = None) -> str:
         # Save processed data to Parquet format
+        # output_path: Optional custom path to save data
         # Returns: Path to saved file
+        
         if self.df is None:
             self.transform_data()
             
-        os.makedirs(os.path.dirname(self.processed_cache_path), exist_ok=True)
-        self.df.to_parquet(self.processed_cache_path)
-        print(f"Saved {len(self.df)} records to {self.processed_cache_path}")
-        return self.processed_cache_path
+        # Use provided path or default to configured path
+        save_path = output_path if output_path else self.processed_cache_path
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        self.df.to_parquet(save_path)
+        print(f"Saved {len(self.df)} records to {save_path}")
+        return save_path
 
     def get_processed_data(self, force_refresh: bool = False) -> pd.DataFrame:
         # Get processed data using cache if available
-        # This is the main method users should call
-        # Arguments:
-        #   force_refresh: If True, reprocess data even if cached exists
+        # force_refresh: If True, reprocess data even if cached exists
         # Returns: Processed DataFrame ready for analysis
         
         # Try loading cached data unless forced to refresh
@@ -159,7 +157,7 @@ class EVDataProcessor:
         # Full processing pipeline if cache unavailable/invalid
         self.load_data()
         self.transform_data()
-        self.save_processed_data()
+        self.save_processed_data()  # Saves to default location
         return self.df
 
 
