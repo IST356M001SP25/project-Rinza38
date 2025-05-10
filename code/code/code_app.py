@@ -15,9 +15,9 @@ def main():
     st.sidebar.header("Filters")
     selected_state = st.sidebar.selectbox("Select State", df['State'].unique())
     year_range = st.sidebar.slider("Model Year Range", 
-                                 int(df['Model Year'].min()),
-                                 int(df['Model Year'].max()),
-                                 (2015, 2023))
+                                   int(df['Model Year'].min()),
+                                   int(df['Model Year'].max()),
+                                   (2015, 2023))
     
     # Filter data
     filtered_df = df[
@@ -25,14 +25,17 @@ def main():
         (df['Model Year'].between(*year_range))
     ]
     
+    # Rename columns for Streamlit map compatibility
+    map_df = filtered_df[['Latitude', 'Longitude']].dropna().rename(
+        columns={'Latitude': 'latitude', 'Longitude': 'longitude'}
+    )
+    
     # Main dashboard
     col1, col2 = st.columns(2)
     
     with col1:
         st.subheader("Geospatial Distribution")
-        st.map(filtered_df[['Latitude', 'Longitude']].dropna(),
-             zoom=6,
-             use_container_width=True)
+        st.map(map_df, zoom=6, use_container_width=True)
     
     with col2:
         st.subheader("Manufacturer Distribution")
