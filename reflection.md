@@ -1,7 +1,7 @@
 # Reflection
 
-Student Name:  name
-Student Email:  email
+Student Name:  Philip Cheuk
+Student Email:  pcheuk@syr.edu
 
 ## Instructions
 
@@ -23,3 +23,6 @@ Examples:
 
 `--- Reflection Below This Line ---`
 
+Working on the Electric Vehicle Population Analysis project allowed me to combine my interest in sustainability with the technical skills I've developed in data processing and visualization. The project involved building a complete data pipeline, from extracting raw EV registration data through an API, cleaning and transforming it with Pandas, to finally presenting insights through an interactive Streamlit dashboard. One of the biggest challenges was handling the geospatial data, particularly parsing the "POINT" strings into usable latitude and longitude coordinates. I overcame this by creating robust helper functions with thorough error handling, which I then validated through unit tests. The dashboard development pushed me to think about user experience, leading me to implement dynamic filters and responsive visualizations that adjust based on the selected data range. I'm particularly proud of how the map visualization automatically zooms based on data density and provides clear feedback when location data is missing.  
+
+The project also reinforced the importance of writing modular, maintainable code. By structuring the project into distinct components, data extraction, transformation, and visualization. I was able to test each part independently and ensure reliability. If I were to expand this project, I'd integrate additional datasets like charging station locations to provide richer context, and explore machine learning techniques to forecast future EV adoption trends. This experience not only improved my technical abilities in Python and data analysis but also taught me how to turn raw data into meaningful, user-friendly insights. Most importantly, it showed me how powerful data visualization can be in telling compelling stories about real-world trends.
